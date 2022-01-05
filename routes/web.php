@@ -15,10 +15,18 @@ Route::get('/', 'HomeController@index');
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::resource("goals", "GoalController");
+Route::resource("goals", "GoalController")->middleware('auth');
 
-Route::resource("goals.todos", "TodoController");
+Route::resource("goals.todos", "TodoController")->middleware('auth');
 
-Route::post('/goals/{goal}/todos/{todo}/sort', 'TodoController@sort');
+Route::post('/goals/{goal}/todos/{todo}/sort', 'TodoController@sort')->middleware('auth');
+
+Route::resource("tags", "TagController")->middleware('auth');
 
 Auth::routes();
+
+Route::post('/goals/{goal}/todos/{todo}/tags/{tag}', 'TodoController@addTag')->middleware('auth');
+
+Route::delete('/goals/{goal}/todos/{todo}/tags/{tag}', 'TodoController@removeTag')->middleware('auth');
+
+
